@@ -8,6 +8,7 @@ class MyViewController : UIViewController {
     let infoButton = UIButton()
     let sairButton = UIButton()
     let viewInfo = UIView()
+    let testButton = UIButton()
     
     override func loadView() {
         //view total
@@ -38,10 +39,17 @@ class MyViewController : UIViewController {
         viewInfo.alpha = 0
         viewInfo.isHidden = true
         
+        // teste para mudar de view
+        testButton.frame = CGRect(x: 629, y: 425, width: 183, height: 51)
+        testButton.setTitle("Teste", for: .normal)
+        testButton.backgroundColor = #colorLiteral(red: 0.2278469205, green: 0.7874162793, blue: 0.7985491157, alpha: 1)
+        testButton.layer.cornerRadius = 25
+        testButton.addTarget(nil, action: #selector(MyViewController.testar), for: .touchUpInside)
         
        
         view.addSubview(logo)
         view.addSubview(infoButton)
+        view.addSubview(testButton)
         view.addSubview(viewInfo)
         
         self.view = view
@@ -57,6 +65,7 @@ class MyViewController : UIViewController {
         UIView.animate(withDuration: 0.3) {
             self.viewInfo.alpha = 1
         }
+        
     }
     
     @IBAction func sairTouched() {
@@ -66,7 +75,26 @@ class MyViewController : UIViewController {
             self.viewInfo.isHidden = true
         }
     }
+    
+    @IBAction func testar() {
+        print("Apertou botão de testar")
+        show(contoViewController, sender: nil)
+    }
 }
+
+class ContoViewController: UIViewController {
+    
+    override func loadView() {
+        let view = UIView()
+        view.frame.size = CGSize(width: 1440, height: 900)
+        view.backgroundColor = #colorLiteral(red: 0.9607035518, green: 0.9608380198, blue: 0.9606611133, alpha: 1)
+        print("chegou aqui")
+        self.view = view
+    }
+}
+let contoViewController = ContoViewController()
+contoViewController.modalPresentationStyle = .fullScreen
+
 // Present the view controller in the Live View window
 let vc = MyViewController(screenType: .mac, isPortrait: true)
 PlaygroundPage.current.liveView = vc.scale(to: 0.5)
