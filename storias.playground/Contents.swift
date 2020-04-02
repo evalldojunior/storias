@@ -49,7 +49,7 @@ class MyViewController : UIViewController {
        
         view.addSubview(logo)
         view.addSubview(infoButton)
-        view.addSubview(testButton)
+        view.addSubview(testButton) //apagar depois de tirar o test
         view.addSubview(viewInfo)
         
         self.view = view
@@ -77,8 +77,7 @@ class MyViewController : UIViewController {
     }
     
     @IBAction func testar() {
-        print("Apertou botão de testar")
-        show(contoViewController, sender: nil)
+        navigationController?.show(contoViewController, sender: nil)
     }
 }
 
@@ -88,13 +87,27 @@ class ContoViewController: UIViewController {
         let view = UIView()
         view.frame.size = CGSize(width: 1440, height: 900)
         view.backgroundColor = #colorLiteral(red: 0.9607035518, green: 0.9608380198, blue: 0.9606611133, alpha: 1)
-        print("chegou aqui")
+        
+        // botao voltar para a colecao
+        let voltar = UIButton()
+        voltar.frame = CGRect(x: 1183, y: 761, width: 164, height: 51)
+        voltar.setBackgroundImage(UIImage(named: "voltar"), for: .normal)
+        voltar.addTarget(nil, action: #selector(ContoViewController.voltarButton), for: .touchUpInside)
+        view.addSubview(voltar)
+        
         self.view = view
     }
+    
+    @IBAction func voltarButton() {
+        navigationController?.popViewController(animated: true)
+    }
 }
+
+let myViewController = MyViewController()
 let contoViewController = ContoViewController()
 contoViewController.modalPresentationStyle = .fullScreen
-
+let navigation = UINavigationController(screenType: .mac, isPortrait: true)
+navigation.navigationBar.isHidden = true
+navigation.pushViewController(myViewController, animated: true)
 // Present the view controller in the Live View window
-let vc = MyViewController(screenType: .mac, isPortrait: true)
-PlaygroundPage.current.liveView = vc.scale(to: 0.5)
+PlaygroundPage.current.liveView = navigation.scale(to: 0.5)
