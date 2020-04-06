@@ -13,9 +13,6 @@ class MyViewController : UIViewController, UICollectionViewDelegate, UICollectio
     let fotos: [UIImage] = [UIImage(named: "foto1")!, UIImage(named: "foto2")!]
     let test1 = UICollectionView(frame: CGRect(x: 38, y: 204, width: 1365, height: 591), collectionViewLayout: UICollectionViewFlowLayout())
     
-    
-    
-    
     override func loadView() {
         //view total
         let view = UIView()
@@ -51,7 +48,7 @@ class MyViewController : UIViewController, UICollectionViewDelegate, UICollectio
         testButton.layer.cornerRadius = 25
         testButton.addTarget(nil, action: #selector(MyViewController.testar), for: .touchUpInside)
         
-        //colection view
+        //collection view
         test1.backgroundColor = #colorLiteral(red: 0.9607843137, green: 0.9607843137, blue: 0.9607843137, alpha: 1)
         test1.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "Cell")
         if let layout = test1.collectionViewLayout as? UICollectionViewFlowLayout {
