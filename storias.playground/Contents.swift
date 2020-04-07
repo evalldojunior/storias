@@ -112,6 +112,12 @@ class MyViewController : UIViewController, UICollectionViewDelegate, UICollectio
         
         return cell!
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        //falta adicionar o dado a ser carregado na view
+        navigationController?.show(contoViewController, sender: nil)
+    }
+    
 }
 
 class ContoCollectionViewCell: UICollectionViewCell {
@@ -157,20 +163,51 @@ class ContoCollectionViewCell: UICollectionViewCell {
 }
 
 class ContoViewController: UIViewController {
+    let collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: 1440, height: 900), collectionViewLayout: UICollectionViewFlowLayout())
+    
     
     override func loadView() {
         let view = UIView()
         view.frame.size = CGSize(width: 1440, height: 900)
         view.backgroundColor = #colorLiteral(red: 0.9607035518, green: 0.9608380198, blue: 0.9606611133, alpha: 1)
-        
+        // imagem de camera
+        let camera = UIImageView(image: UIImage(named: "camera"))
+        camera.frame = CGRect(x: 89, y: 57, width: 91, height: 91)
         // botao voltar para a colecao
         let voltar = UIButton()
         voltar.frame = CGRect(x: 1183, y: 761, width: 164, height: 51)
         voltar.setBackgroundImage(UIImage(named: "voltar"), for: .normal)
         voltar.addTarget(nil, action: #selector(ContoViewController.voltarButton), for: .touchUpInside)
+        // titulo
+        let titulo = UILabel()
+        titulo.frame = CGRect(x: 175, y: 80, width: 339, height: 50)
+        titulo.textColor = #colorLiteral(red: 0.9607843137, green: 0.9607843137, blue: 0.9607843137, alpha: 1)
+        titulo.layer.masksToBounds = true
+        titulo.layer.cornerRadius = 25
+        titulo.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMaxXMaxYCorner]
+        titulo.backgroundColor = #colorLiteral(red: 0.2278469205, green: 0.7874162793, blue: 0.7985491157, alpha: 1)
+        titulo.font = UIFont(name: "LuckiestGuy-Regular", size: 32)
+        titulo.textAlignment = .center
+        titulo.text = "Fotografia do bem"
+        // collectionView
+        collectionView.backgroundColor = #colorLiteral(red: 0.9607843137, green: 0.9607843137, blue: 0.9607843137, alpha: 1)
+        
+        view.addSubview(collectionView)
+        view.addSubview(titulo)
+        view.addSubview(camera)
         view.addSubview(voltar)
         
         self.view = view
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+//        let imagem =  UIImage(named: self.cachorro!.foto)
+//        self.imageView?.image = imagem;
+//        self.labelRaca?.text = "Raça: \(self.cachorro!.raca)"
+//        self.labelTempoMedioVida?.text = "Média de vida: \(self.cachorro!.lifespan) anos"
+//        print("Carregando foto \(self.cachorro!.foto)")
     }
     
     @IBAction func voltarButton() {
