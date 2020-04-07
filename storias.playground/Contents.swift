@@ -21,7 +21,6 @@ class MyViewController : UIViewController, UICollectionViewDelegate, UICollectio
         //view total
         let view = UIView()
         view.backgroundColor = #colorLiteral(red: 0.9607035518, green: 0.9608380198, blue: 0.9606611133, alpha: 1)
-        //view.frame = CGRect(x: 0, y: 0, width: 1194, height: 834)
         view.frame.size = CGSize(width: 1440, height: 900)
         
         // logo storias e info
@@ -53,18 +52,11 @@ class MyViewController : UIViewController, UICollectionViewDelegate, UICollectio
 //        testButton.addTarget(nil, action: #selector(MyViewController.testar), for: .touchUpInside)
         
         //collection view
-        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "Cell")
+        collectionView.register(ContoCollectionViewCell.self, forCellWithReuseIdentifier: "Cell")
         if let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             layout.scrollDirection = .horizontal
         }
         collectionView.backgroundColor = #colorLiteral(red: 0.9607843137, green: 0.9607843137, blue: 0.9607843137, alpha: 1)
-        
-        
-        let bug = UILabel()
-        bug.text = "Tem um bug na collection view que faz o gradiente ficar cada vez mais escuro kkk"
-        bug.layer.frame = CGRect(x: 200, y: 830, width: 1000, height: 50)
-        bug.textColor = #colorLiteral(red: 0.2156862745, green: 0.2156862745, blue: 0.2156862745, alpha: 1)
-        bug.textAlignment = .center
         
         //adicionando elementos na view geral
         view.addSubview(logo)
@@ -72,7 +64,6 @@ class MyViewController : UIViewController, UICollectionViewDelegate, UICollectio
         view.addSubview(testButton) //apagar depois de tirar o test
         view.addSubview(collectionView)
         view.addSubview(viewInfo)
-        view.addSubview(bug)
         
         self.view = view
     }
@@ -113,23 +104,32 @@ class MyViewController : UIViewController, UICollectionViewDelegate, UICollectio
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath)
-        cell.backgroundView = UIImageView(image: fotos[indexPath.item])
-        cell.layer.cornerRadius = 15
-        cell.layer.masksToBounds = true
-        cell.layer.borderColor = #colorLiteral(red: 0.2278469205, green: 0.7874162793, blue: 0.7985491157, alpha: 1)
-        cell.layer.borderWidth = 8
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as? ContoCollectionViewCell
+        cell?.backgroundView = UIImageView(image: fotos[indexPath.item])
+        cell?.titulo.text = "Fotografia do bem"
+        cell?.descricao.text = "Uma história sobre crianças com necessidades especiais retratadas a mostrar diversas formas de ser feliz."
+        cell?.autor.text = "por  Mykaela Carbonera"
         
-        // enquanto nao sei fazer cores gradientes:
-        // tem algum bug com a collection view
-        let gradient = UIImageView(image: UIImage(named: "gradient"))
-        gradient.frame = CGRect(x: 0, y: 0, width: 913, height: 591)
-        //gradient.alpha = 0.8
-        
-        
-        //usando como test antes de ter os textos reais para substituir aqui
-        let titulo = UILabel(frame: CGRect(x: 0, y: 385, width: 250, height: 50))
-        titulo.text = "Fotografia do bem"
+        return cell!
+    }
+}
+
+class ContoCollectionViewCell: UICollectionViewCell {
+    public let gradient = UIImageView(frame: CGRect(x: 0, y: 0, width: 913, height: 591))
+    public let titulo = UILabel(frame: CGRect(x: 0, y: 385, width: 250, height: 50))
+    public let descricao = UILabel(frame: CGRect(x: 30, y: 450, width: 550, height: 50))
+    let autor = UILabel(frame: CGRect(x: 30, y: 510, width: 200, height: 20))
+    
+    public override init(frame: CGRect){
+        super.init(frame:frame)
+        //degrade
+        gradient.image = UIImage(named: "gradient")
+        //bordas
+        self.layer.cornerRadius = 15
+        self.layer.masksToBounds = true
+        self.layer.borderColor = #colorLiteral(red: 0.2278469205, green: 0.7874162793, blue: 0.7985491157, alpha: 1)
+        self.layer.borderWidth = 8
+        //titulo
         titulo.textColor = #colorLiteral(red: 0.9607843137, green: 0.9607843137, blue: 0.9607843137, alpha: 1)
         titulo.layer.masksToBounds = true
         titulo.layer.cornerRadius = 25
@@ -137,23 +137,22 @@ class MyViewController : UIViewController, UICollectionViewDelegate, UICollectio
         titulo.backgroundColor = #colorLiteral(red: 0.2278469205, green: 0.7874162793, blue: 0.7985491157, alpha: 1)
         titulo.font = UIFont(name: "LuckiestGuy-Regular", size: 24)
         titulo.textAlignment = .center
-        
-        let descricao = UILabel(frame: CGRect(x: 30, y: 450, width: 550, height: 50))
-        descricao.text = "Uma história sobre crianças com necessidades especiais retratadas a mostrar diversas formas de ser feliz."
+        //descricao
         descricao.textColor = #colorLiteral(red: 0.9607843137, green: 0.9607843137, blue: 0.9607843137, alpha: 1)
         descricao.numberOfLines = 2
         descricao.font = UIFont(name: "ABeeZee-Regular", size: 20)
-        
-        let autor = UILabel(frame: CGRect(x: 30, y: 510, width: 180, height: 20))
-        autor.text = "por  Mykaela Carbonera"
+        //autor
         autor.textColor = #colorLiteral(red: 0.9607843137, green: 0.9607843137, blue: 0.9607843137, alpha: 1)
         autor.font = UIFont(name: "ABeeZee-Regular", size: 16)
         
-        cell.addSubview(gradient)
-        cell.addSubview(titulo)
-        cell.addSubview(descricao)
-        cell.addSubview(autor)
-        return cell
+        self.addSubview(gradient)
+        self.addSubview(titulo)
+        self.addSubview(descricao)
+        self.addSubview(autor)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }
 
