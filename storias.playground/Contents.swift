@@ -9,7 +9,8 @@ class MyViewController : UIViewController, UICollectionViewDelegate, UICollectio
     let sairButton = UIButton()
     let viewInfo = UIView()
     let testButton = UIButton()
-    let fotos: [UIImage] = [UIImage(named: "foto1")!, UIImage(named: "foto2")!, UIImage(named: "foto3")!, UIImage(named: "foto4")!, UIImage(named: "foto5")!]
+    var contos: [Conto] = ContoDados.dadosGeral
+    //let fotos: [UIImage] = [UIImage(named: "foto1")!, UIImage(named: "foto2")!, UIImage(named: "foto3")!, UIImage(named: "foto4")!, UIImage(named: "foto5")!]
     let collectionView = UICollectionView(frame: CGRect(x: 38, y: 204, width: 1365, height: 591), collectionViewLayout: UICollectionViewFlowLayout())
     
     override func loadView() {
@@ -100,21 +101,22 @@ class MyViewController : UIViewController, UICollectionViewDelegate, UICollectio
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return fotos.count
+        return contos.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as? ContoCollectionViewCell
-        cell?.backgroundView = UIImageView(image: fotos[indexPath.item])
-        cell?.titulo.text = "Fotografia do bem"
-        cell?.descricao.text = "Uma história sobre crianças com necessidades especiais retratadas a mostrar diversas formas de ser feliz."
-        cell?.autor.text = "por  Mykaela Carbonera"
+        cell?.backgroundView = UIImageView(image: contos[indexPath.item].fotos[0])
+        cell?.titulo.text = contos[indexPath.section].titulo
+        cell?.descricao.text = contos[indexPath.section].descricao
+        cell?.autor.text = contos[indexPath.section].autor
         
         return cell!
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         //falta adicionar o dado a ser carregado na view
+        contoViewController.conto = contos[indexPath.section]
         navigationController?.show(contoViewController, sender: nil)
     }
     
@@ -162,7 +164,8 @@ class ContoCollectionViewCell: UICollectionViewCell {
     }
 }
 
-class ContoViewController: UIViewController {
+class ContoViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    var conto: Conto?
     let collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: 1440, height: 900), collectionViewLayout: UICollectionViewFlowLayout())
     
     
@@ -188,9 +191,15 @@ class ContoViewController: UIViewController {
         titulo.backgroundColor = #colorLiteral(red: 0.2278469205, green: 0.7874162793, blue: 0.7985491157, alpha: 1)
         titulo.font = UIFont(name: "LuckiestGuy-Regular", size: 32)
         titulo.textAlignment = .center
-        titulo.text = "Fotografia do bem"
+        titulo.text = conto?.titulo
         // collectionView
-        collectionView.backgroundColor = #colorLiteral(red: 0.9607843137, green: 0.9607843137, blue: 0.9607843137, alpha: 1)
+        collectionView.register(ContoEspecificoCollectionViewCell.self, forCellWithReuseIdentifier: "Cell")
+        if let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
+            layout.scrollDirection = .horizontal
+        }
+        collectionView.backgroundColor = #colorLiteral(red: 0.2156862745, green: 0.2156862745, blue: 0.2156862745, alpha: 1)
+        collectionView.delegate = self
+        collectionView.dataSource = self
         
         view.addSubview(collectionView)
         view.addSubview(titulo)
@@ -210,8 +219,46 @@ class ContoViewController: UIViewController {
 //        print("Carregando foto \(self.cachorro!.foto)")
     }
     
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: 1440, height: 900)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return (conto?.fotos.count)!
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as? ContoEspecificoCollectionViewCell
+        cell?.backgroundView = UIImageView(image: conto?.fotos[indexPath.item])
+        cell?.descricao.text = conto?.legendas[indexPath.item]
+        return cell!
+    }
+    
     @IBAction func voltarButton() {
         navigationController?.popViewController(animated: true)
+    }
+}
+
+class ContoEspecificoCollectionViewCell: UICollectionViewCell {
+    
+    public let descricao = UILabel(frame: CGRect(x: 134, y: 550, width: 730, height: 250))
+    
+    public override init(frame: CGRect){
+        super.init(frame:frame)
+        //bordas
+//        self.layer.borderColor = #colorLiteral(red: 0.2278469205, green: 0.7874162793, blue: 0.7985491157, alpha: 1)
+//        self.layer.borderWidth = 8
+        
+        //descricao
+        descricao.textColor = #colorLiteral(red: 0.9607843137, green: 0.9607843137, blue: 0.9607843137, alpha: 1)
+        descricao.numberOfLines = 5
+        descricao.font = UIFont(name: "ABeeZee-Regular", size: 20)
+    
+        self.addSubview(descricao)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }
 
