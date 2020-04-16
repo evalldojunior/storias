@@ -16,15 +16,12 @@ class MyViewController : UIViewController, UICollectionViewDelegate, UICollectio
     let viewInfo = UIView()
     let testButton = UIButton()
     var contos: [Conto] = ContoDados.dadosGeral
-    //let fotos: [UIImage] = [UIImage(named: "foto1")!, UIImage(named: "foto2")!, UIImage(named: "foto3")!, UIImage(named: "foto4")!, UIImage(named: "foto5")!]
     let collectionView = UICollectionView(frame: CGRect(x: 38, y: 204, width: 1365, height: 591), collectionViewLayout: UICollectionViewFlowLayout())
     
     override func loadView() {
-        
-        
         //view total
         let view = UIView()
-        view.backgroundColor = #colorLiteral(red: 0.9607035518, green: 0.9608380198, blue: 0.9606611133, alpha: 1)
+        view.backgroundColor = .myWhite
         view.frame.size = CGSize(width: 1440, height: 900)
         
         // logo storias e info
@@ -48,19 +45,12 @@ class MyViewController : UIViewController, UICollectionViewDelegate, UICollectio
         viewInfo.alpha = 0
         viewInfo.isHidden = true
         
-        // teste para mudar de view
-        //        testButton.frame = CGRect(x: 629, y: 425, width: 183, height: 51)
-        //        testButton.setTitle("Teste", for: .normal)
-        //        testButton.backgroundColor = #colorLiteral(red: 0.2278469205, green: 0.7874162793, blue: 0.7985491157, alpha: 1)
-        //        testButton.layer.cornerRadius = 25
-        //        testButton.addTarget(nil, action: #selector(MyViewController.testar), for: .touchUpInside)
-        
         //collection view
         collectionView.register(ContoCollectionViewCell.self, forCellWithReuseIdentifier: "Cell")
         if let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             layout.scrollDirection = .horizontal
         }
-        collectionView.backgroundColor = #colorLiteral(red: 0.9607843137, green: 0.9607843137, blue: 0.9607843137, alpha: 1)
+        collectionView.backgroundColor = .myWhite
         
         //adicionando elementos na view geral
         view.addSubview(logo)
@@ -77,9 +67,6 @@ class MyViewController : UIViewController, UICollectionViewDelegate, UICollectio
         collectionView.dataSource = self
         infoButton.addTarget(self, action: #selector(MyViewController.infoTouched), for: .touchUpInside)
         sairButton.addTarget(self, action: #selector(MyViewController.sairTouched), for: .touchUpInside)
-        //        for constraint in self.view.constraints {
-        //            constraint.isActive = false
-        //        }
     }
     
     @IBAction func infoTouched() {
@@ -87,7 +74,6 @@ class MyViewController : UIViewController, UICollectionViewDelegate, UICollectio
         UIView.animate(withDuration: 0.3) {
             self.viewInfo.alpha = 1
         }
-        
     }
     
     @IBAction func sairTouched() {
@@ -131,49 +117,7 @@ class MyViewController : UIViewController, UICollectionViewDelegate, UICollectio
     
 }
 
-class ContoCollectionViewCell: UICollectionViewCell {
-    public let gradient = UIImageView(frame: CGRect(x: 0, y: 0, width: 913, height: 591))
-    public let titulo = UILabel(frame: CGRect(x: 0, y: 385, width: 250, height: 50))
-    public let descricao = UILabel(frame: CGRect(x: 30, y: 450, width: 550, height: 50))
-    let autor = UILabel(frame: CGRect(x: 30, y: 510, width: 200, height: 20))
-    
-    public override init(frame: CGRect){
-        super.init(frame:frame)
-        //degrade
-        gradient.image = UIImage(named: "gradient")
-        //bordas
-        self.layer.cornerRadius = 15
-        self.layer.masksToBounds = true
-        self.layer.borderColor = #colorLiteral(red: 0.2278469205, green: 0.7874162793, blue: 0.7985491157, alpha: 1)
-        self.layer.borderWidth = 8
-        //titulo
-        titulo.textColor = #colorLiteral(red: 0.9607843137, green: 0.9607843137, blue: 0.9607843137, alpha: 1)
-        titulo.layer.masksToBounds = true
-        titulo.layer.cornerRadius = 25
-        titulo.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMaxXMaxYCorner]
-        titulo.backgroundColor = #colorLiteral(red: 0.2278469205, green: 0.7874162793, blue: 0.7985491157, alpha: 1)
-        titulo.font = UIFont(name: "LuckiestGuy-Regular", size: 24)
-        titulo.textAlignment = .center
-        
-        
-        //descricao
-        descricao.textColor = #colorLiteral(red: 0.9607843137, green: 0.9607843137, blue: 0.9607843137, alpha: 1)
-        descricao.numberOfLines = 2
-        descricao.font = UIFont(name: "ABeeZee-Regular", size: 20)
-        //autor
-        autor.textColor = #colorLiteral(red: 0.9607843137, green: 0.9607843137, blue: 0.9607843137, alpha: 1)
-        autor.font = UIFont(name: "ABeeZee-Regular", size: 16)
-        
-        self.addSubview(gradient)
-        self.addSubview(titulo)
-        self.addSubview(descricao)
-        self.addSubview(autor)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-}
+
 
 class ContoViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     var conto: Conto?
@@ -183,7 +127,7 @@ class ContoViewController: UIViewController, UICollectionViewDelegate, UICollect
     override func loadView() {
         let view = UIView()
         view.frame.size = CGSize(width: 1440, height: 900)
-        view.backgroundColor = #colorLiteral(red: 0.9607035518, green: 0.9608380198, blue: 0.9606611133, alpha: 1)
+        view.backgroundColor = .myWhite
         // imagem de camera
         let camera = UIImageView(image: UIImage(named: "camera"))
         camera.frame = CGRect(x: 89, y: 57, width: 91, height: 91)
@@ -195,11 +139,11 @@ class ContoViewController: UIViewController, UICollectionViewDelegate, UICollect
         // titulo
         let titulo = UILabel()
         //titulo.frame = CGRect(x: 175, y: 80, width: 339, height: 50)
-        titulo.textColor = #colorLiteral(red: 0.9607843137, green: 0.9607843137, blue: 0.9607843137, alpha: 1)
+        titulo.textColor = .myWhite
         titulo.layer.masksToBounds = true
         titulo.layer.cornerRadius = 25
         titulo.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMaxXMaxYCorner]
-        titulo.backgroundColor = #colorLiteral(red: 0.2278469205, green: 0.7874162793, blue: 0.7985491157, alpha: 1)
+        titulo.backgroundColor = .myBlue
         titulo.font = UIFont(name: "LuckiestGuy-Regular", size: 30)
         titulo.textAlignment = .center
         titulo.text = conto?.titulo
@@ -210,7 +154,7 @@ class ContoViewController: UIViewController, UICollectionViewDelegate, UICollect
         if let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             layout.scrollDirection = .horizontal
         }
-        collectionView.backgroundColor = #colorLiteral(red: 0.2156862745, green: 0.2156862745, blue: 0.2156862745, alpha: 1)
+        collectionView.backgroundColor = .myBlack
         collectionView.delegate = self
         collectionView.dataSource = self
         
@@ -220,16 +164,6 @@ class ContoViewController: UIViewController, UICollectionViewDelegate, UICollect
         view.addSubview(voltar)
         
         self.view = view
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        //        let imagem =  UIImage(named: self.cachorro!.foto)
-        //        self.imageView?.image = imagem;
-        //        self.labelRaca?.text = "Raça: \(self.cachorro!.raca)"
-        //        self.labelTempoMedioVida?.text = "Média de vida: \(self.cachorro!.lifespan) anos"
-        //        print("Carregando foto \(self.cachorro!.foto)")
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -252,29 +186,6 @@ class ContoViewController: UIViewController, UICollectionViewDelegate, UICollect
     }
 }
 
-class ContoEspecificoCollectionViewCell: UICollectionViewCell {
-    
-    public let descricao = UILabel(frame: CGRect(x: 134, y: 550, width: 730, height: 250))
-    
-    public override init(frame: CGRect){
-        super.init(frame:frame)
-        //bordas
-        //        self.layer.borderColor = #colorLiteral(red: 0.2278469205, green: 0.7874162793, blue: 0.7985491157, alpha: 1)
-        //        self.layer.borderWidth = 8
-        
-        //descricao
-        descricao.textColor = #colorLiteral(red: 0.9607843137, green: 0.9607843137, blue: 0.9607843137, alpha: 1)
-        descricao.numberOfLines = 5
-        descricao.font = UIFont(name: "ABeeZee-Regular", size: 20)
-        
-        self.addSubview(descricao)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-}
-
 class TelaInicialViewController: UIViewController {
     let grupo2 = SKSpriteNode(imageNamed: "bolhagrupo2")
     let grupo1 = SKSpriteNode(imageNamed: "bolhagrupo1")
@@ -287,10 +198,10 @@ class TelaInicialViewController: UIViewController {
     override func loadView() {
         //view total
         let view = SKView()
-        view.backgroundColor = #colorLiteral(red: 0.9607035518, green: 0.9608380198, blue: 0.9606611133, alpha: 1)
+        view.backgroundColor = .myWhite
         view.frame.size = CGSize(width: 1440, height: 900)
         
-        scene.backgroundColor = #colorLiteral(red: 0.9607035518, green: 0.9608380198, blue: 0.9606611133, alpha: 1)
+        scene.backgroundColor = .myWhite
         
         // logo
         logo.image = UIImage(named: "logo1")
@@ -372,8 +283,6 @@ class TelaInicialViewController: UIViewController {
                 }
             }
         })
-        
-        
     }
     
     @IBAction func comecarButton() {
@@ -384,7 +293,8 @@ class TelaInicialViewController: UIViewController {
 let myViewController = MyViewController()
 let contoViewController = ContoViewController()
 let telaInicialViewController = TelaInicialViewController()
-contoViewController.modalPresentationStyle = .fullScreen
+
+//contoViewController.modalPresentationStyle = .fullScreen
 let navigation = UINavigationController(screenType: .mac, isPortrait: true)
 navigation.navigationBar.isHidden = true
 navigation.pushViewController(telaInicialViewController, animated: true)
