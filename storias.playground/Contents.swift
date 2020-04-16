@@ -2,6 +2,7 @@
 
 import UIKit
 import PlaygroundSupport
+import SpriteKit
 
 let cfURL = Bundle.main.url(forResource: "LuckiestGuy-Regular", withExtension: "ttf")! as CFURL
 CTFontManagerRegisterFontsForURL(cfURL, CTFontManagerScope.process, nil)
@@ -48,11 +49,11 @@ class MyViewController : UIViewController, UICollectionViewDelegate, UICollectio
         viewInfo.isHidden = true
         
         // teste para mudar de view
-//        testButton.frame = CGRect(x: 629, y: 425, width: 183, height: 51)
-//        testButton.setTitle("Teste", for: .normal)
-//        testButton.backgroundColor = #colorLiteral(red: 0.2278469205, green: 0.7874162793, blue: 0.7985491157, alpha: 1)
-//        testButton.layer.cornerRadius = 25
-//        testButton.addTarget(nil, action: #selector(MyViewController.testar), for: .touchUpInside)
+        //        testButton.frame = CGRect(x: 629, y: 425, width: 183, height: 51)
+        //        testButton.setTitle("Teste", for: .normal)
+        //        testButton.backgroundColor = #colorLiteral(red: 0.2278469205, green: 0.7874162793, blue: 0.7985491157, alpha: 1)
+        //        testButton.layer.cornerRadius = 25
+        //        testButton.addTarget(nil, action: #selector(MyViewController.testar), for: .touchUpInside)
         
         //collection view
         collectionView.register(ContoCollectionViewCell.self, forCellWithReuseIdentifier: "Cell")
@@ -76,9 +77,9 @@ class MyViewController : UIViewController, UICollectionViewDelegate, UICollectio
         collectionView.dataSource = self
         infoButton.addTarget(self, action: #selector(MyViewController.infoTouched), for: .touchUpInside)
         sairButton.addTarget(self, action: #selector(MyViewController.sairTouched), for: .touchUpInside)
-//        for constraint in self.view.constraints {
-//            constraint.isActive = false
-//        }
+        //        for constraint in self.view.constraints {
+        //            constraint.isActive = false
+        //        }
     }
     
     @IBAction func infoTouched() {
@@ -153,7 +154,7 @@ class ContoCollectionViewCell: UICollectionViewCell {
         titulo.backgroundColor = #colorLiteral(red: 0.2278469205, green: 0.7874162793, blue: 0.7985491157, alpha: 1)
         titulo.font = UIFont(name: "LuckiestGuy-Regular", size: 24)
         titulo.textAlignment = .center
-    
+        
         
         //descricao
         descricao.textColor = #colorLiteral(red: 0.9607843137, green: 0.9607843137, blue: 0.9607843137, alpha: 1)
@@ -224,11 +225,11 @@ class ContoViewController: UIViewController, UICollectionViewDelegate, UICollect
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-//        let imagem =  UIImage(named: self.cachorro!.foto)
-//        self.imageView?.image = imagem;
-//        self.labelRaca?.text = "Raça: \(self.cachorro!.raca)"
-//        self.labelTempoMedioVida?.text = "Média de vida: \(self.cachorro!.lifespan) anos"
-//        print("Carregando foto \(self.cachorro!.foto)")
+        //        let imagem =  UIImage(named: self.cachorro!.foto)
+        //        self.imageView?.image = imagem;
+        //        self.labelRaca?.text = "Raça: \(self.cachorro!.raca)"
+        //        self.labelTempoMedioVida?.text = "Média de vida: \(self.cachorro!.lifespan) anos"
+        //        print("Carregando foto \(self.cachorro!.foto)")
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -258,14 +259,14 @@ class ContoEspecificoCollectionViewCell: UICollectionViewCell {
     public override init(frame: CGRect){
         super.init(frame:frame)
         //bordas
-//        self.layer.borderColor = #colorLiteral(red: 0.2278469205, green: 0.7874162793, blue: 0.7985491157, alpha: 1)
-//        self.layer.borderWidth = 8
+        //        self.layer.borderColor = #colorLiteral(red: 0.2278469205, green: 0.7874162793, blue: 0.7985491157, alpha: 1)
+        //        self.layer.borderWidth = 8
         
         //descricao
         descricao.textColor = #colorLiteral(red: 0.9607843137, green: 0.9607843137, blue: 0.9607843137, alpha: 1)
         descricao.numberOfLines = 5
         descricao.font = UIFont(name: "ABeeZee-Regular", size: 20)
-    
+        
         self.addSubview(descricao)
     }
     
@@ -275,63 +276,104 @@ class ContoEspecificoCollectionViewCell: UICollectionViewCell {
 }
 
 class TelaInicialViewController: UIViewController {
+    let grupo2 = SKSpriteNode(imageNamed: "bolhagrupo2")
+    let grupo1 = SKSpriteNode(imageNamed: "bolhagrupo1")
+    let scene = SKScene(size: CGSize(width: 1440, height: 900))
+    let logo = UIImageView(frame: CGRect(x: 312, y: 210, width: 451, height: 170))
+    let texto1 = UILabel(frame: CGRect(x: 344, y: 415, width: 797, height: 60))
+    let texto2 = UILabel(frame: CGRect(x: 344, y: 485, width: 582, height: 60))
+    let comecar = UIButton(frame: CGRect(x: 1022, y: 639, width: 183, height: 55))
+    
     override func loadView() {
         //view total
-        let view = UIView()
+        let view = SKView()
         view.backgroundColor = #colorLiteral(red: 0.9607035518, green: 0.9608380198, blue: 0.9606611133, alpha: 1)
         view.frame.size = CGSize(width: 1440, height: 900)
         
+        scene.backgroundColor = #colorLiteral(red: 0.9607035518, green: 0.9608380198, blue: 0.9606611133, alpha: 1)
+        
         // logo
-        let logo = UIImageView(frame: CGRect(x: 312, y: 210, width: 451, height: 170))
         logo.image = UIImage(named: "logo1")
         
         //textos introdutorios
-        let texto1 = UILabel(frame: CGRect(x: 344, y: 415, width: 797, height: 60))
         texto1.text = "O playground tem como objetivo contar histórias através de imagens, propondo um novo olhar para aqueles que as leem."
         texto1.font = UIFont(name: "ABeeZee-Regular", size: 22)
         texto1.numberOfLines = 2
-        let texto2 = UILabel(frame: CGRect(x: 344, y: 485, width: 582, height: 60))
         texto2.text = "O foco é na diminuição do preconceito a partir das novas perspectivas observadas."
         texto2.font = UIFont(name: "ABeeZee-Regular", size: 22)
         texto2.numberOfLines = 2
         
         //botao comecar
-        let comecar = UIButton(frame: CGRect(x: 1022, y: 639, width: 183, height: 55))
         comecar.setBackgroundImage(UIImage(named: "comecar"), for: .normal)
         comecar.addTarget(nil, action: #selector(TelaInicialViewController.comecarButton), for: .touchUpInside)
         
+        view.presentScene(scene)
+        view.showsFPS
         view.addSubview(logo)
         view.addSubview(texto1)
         view.addSubview(texto2)
         view.addSubview(comecar)
-
-        // nao sei se essa parte vai entrar aqui, dai fica aqui por enquanto
-        let bolha1 = UIImageView(image: UIImage(named: "bolha1"))
-        bolha1.frame = CGRect(x: -52, y: -25, width: 578, height: 520)
-        let bolha2 = UIImageView(image: UIImage(named: "bolha2"))
-        bolha2.frame = CGRect(x: 669, y: -44, width: 342, height: 122)
-        let bolha3 = UIImageView(image: UIImage(named: "bolha3"))
-        bolha3.frame = CGRect(x: 985, y: -119, width: 488, height: 351)
-        let bolha4 = UIImageView(image: UIImage(named: "bolha4"))
-        bolha4.frame = CGRect(x: -37, y: 639, width: 420, height: 318)
-        let bolha5 = UIImageView(image: UIImage(named: "bolha5"))
-        bolha5.frame = CGRect(x: 270, y: 774, width: 451, height: 177)
-        let bolha6 = UIImageView(image: UIImage(named: "bolha6"))
-        bolha6.frame = CGRect(x: 1012, y: 354, width: 478, height: 597)
         
+        grupo1.anchorPoint = CGPoint.zero
+        grupo1.position = CGPoint(x: -37, y: -50)
         
+        grupo2.anchorPoint = CGPoint.zero
+        grupo2.position = CGPoint(x: -52, y: -45)
         
-        view.addSubview(bolha1)
-        view.addSubview(bolha2)
-        view.addSubview(bolha3)
-        view.addSubview(bolha5)
-        view.addSubview(bolha4)
-        view.addSubview(bolha6)
-            
-            
-            
-            
+        scene.addChild(grupo2)
+        scene.addChild(grupo1)
+        
+        scene.alpha = 0
+        logo.alpha = 0
+        texto1.alpha = 0
+        texto2.alpha = 0
+        comecar.alpha = 0
+        
         self.view = view
+    }
+    
+    override func viewDidLoad() {
+        let move1 = SKAction.moveBy(x: 10, y: 10, duration: 2.0)
+        let move2 = SKAction.moveBy(x: 10, y: -20, duration: 2.5)
+        let move3 = SKAction.moveBy(x: -10, y: -10, duration: 1.5)
+        let move4 = SKAction.moveBy(x: -10, y: 20 , duration: 2.5)
+        let sequence1 = SKAction.sequence([move1, move2, move3, move4])
+        let runForever1 = SKAction.repeatForever(sequence1)
+        
+        let move5 = SKAction.moveBy(x: 10, y: -10, duration: 1.5)
+        let move6 = SKAction.moveBy(x: -10, y: 20, duration: 2.0)
+        let move7 = SKAction.moveBy(x: -10, y: 10, duration: 2.5)
+        let move8 = SKAction.moveBy(x: 10, y: -20, duration: 2.0)
+        let sequence2 = SKAction.sequence([move5, move6, move7, move8])
+        let runForever2 = SKAction.repeatForever(sequence2)
+        
+        grupo1.run(runForever2)
+        grupo2.run(runForever1)
+        
+        UIView.animate(withDuration: 1.5, delay: 1, options: .curveEaseInOut, animations: {
+            //nao ta fazendo a animacao rs
+            self.scene.alpha = 1
+        }, completion: { _ in
+            UIView.animate(withDuration: 1.5, delay: 1, options: .curveEaseInOut, animations: {
+                self.logo.alpha = 1
+            }) { _ in
+                UIView.animate(withDuration: 1, delay: 1, options: .curveEaseInOut, animations: {
+                    self.texto1.alpha = 1
+                }) { _ in
+                    UIView.animate(withDuration: 1, delay: 4, options: .curveEaseInOut, animations: {
+                        self.texto2.alpha = 1
+                    }) { _ in
+                        UIView.animate(withDuration: 1, delay: 2.5, options: .curveEaseInOut, animations: {
+                            self.comecar.alpha = 1
+                        }) { _ in
+                            
+                        }
+                    }
+                }
+            }
+        })
+        
+        
     }
     
     @IBAction func comecarButton() {
