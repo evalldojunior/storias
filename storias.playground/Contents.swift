@@ -325,4 +325,4 @@ let navigation = UINavigationController(screenType: .mac, isPortrait: true)
 navigation.navigationBar.isHidden = true
 navigation.pushViewController(telaInicialViewController, animated: true)
 // Present the view controller in the Live View window
-PlaygroundPage.current.liveView = navigation.scale(to: 0.5)
+PlaygroundPage.current.liveView = navigation.scale(to: 0.525)
