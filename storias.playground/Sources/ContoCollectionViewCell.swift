@@ -3,9 +3,9 @@ import Foundation
 
 public class ContoCollectionViewCell: UICollectionViewCell {
     public let gradient = UIImageView(frame: CGRect(x: 0, y: 0, width: 913, height: 591))
-    public let titulo = UILabel(frame: CGRect(x: 0, y: 385, width: 250, height: 50))
     public let descricao = UILabel(frame: CGRect(x: 30, y: 450, width: 550, height: 50))
     public let autor = UILabel(frame: CGRect(x: 30, y: 510, width: 200, height: 20))
+    public let titulo = UITextView()
     
     public override init(frame: CGRect){
         super.init(frame:frame)
@@ -24,6 +24,7 @@ public class ContoCollectionViewCell: UICollectionViewCell {
         titulo.backgroundColor = .myBlue
         titulo.font = UIFont(name: "LuckiestGuy-Regular", size: 24)
         titulo.textAlignment = .center
+        titulo.isEditable = false
         //descricao
         descricao.textColor = .myWhite
         descricao.numberOfLines = 2

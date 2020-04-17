@@ -14,7 +14,6 @@ class MyViewController : UIViewController, UICollectionViewDelegate, UICollectio
     let infoButton = UIButton()
     let sairButton = UIButton()
     let viewInfo = UIView()
-    let testButton = UIButton()
     var contos: [Conto] = ContoDados.dadosGeral
     let collectionView = UICollectionView(frame: CGRect(x: 38, y: 204, width: 1365, height: 591), collectionViewLayout: UICollectionViewFlowLayout())
     
@@ -29,7 +28,7 @@ class MyViewController : UIViewController, UICollectionViewDelegate, UICollectio
         logo.frame = CGRect(x: 85, y: 13, width: 429, height: 173)
         infoButton.frame = CGRect(x: 1275, y: 90, width: 32, height: 32)
         infoButton.setBackgroundImage(UIImage(named: "info"), for: .normal)
-        
+
         // view para a info sobre o playground
         sairButton.frame = CGRect(x: 910, y: 290, width: 45, height: 44)
         sairButton.setBackgroundImage(UIImage(named: "sair"), for: .normal)
@@ -55,7 +54,6 @@ class MyViewController : UIViewController, UICollectionViewDelegate, UICollectio
         //adicionando elementos na view geral
         view.addSubview(logo)
         view.addSubview(infoButton)
-        view.addSubview(testButton) //apagar depois de tirar o test
         view.addSubview(collectionView)
         view.addSubview(viewInfo)
         
@@ -84,10 +82,6 @@ class MyViewController : UIViewController, UICollectionViewDelegate, UICollectio
         }
     }
     
-    @IBAction func testar() {
-        navigationController?.show(contoViewController, sender: nil)
-    }
-    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 913, height: 591)
     }
@@ -99,19 +93,21 @@ class MyViewController : UIViewController, UICollectionViewDelegate, UICollectio
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as? ContoCollectionViewCell
         cell?.backgroundView = UIImageView(image: contos[indexPath.item].fotos[0])
-        cell?.titulo.text = contos[indexPath.section].titulo
-        cell?.descricao.text = contos[indexPath.section].descricao
-        cell?.autor.text = contos[indexPath.section].autor
+        cell?.titulo.text = contos[indexPath.item].titulo
+        cell?.descricao.text = contos[indexPath.item].descricao
+        cell?.autor.text = contos[indexPath.item].autor
         // codigo para o tamanho da label mudar de acordo com o tamanho do texto
         cell?.titulo.sizeToFit()
-        cell?.titulo.frame = CGRect(x: 0, y: 385, width: (cell?.titulo.frame.size.width)!+40, height: 50)
+        cell?.titulo.frame = CGRect(x: 0, y: 385, width: (cell?.titulo.frame.size.width)!+40, height: 48)
+        cell?.titulo.textContainerInset = UIEdgeInsets(top: 15, left: 0, bottom: 0, right: 0)
         
         return cell!
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         //falta adicionar o dado a ser carregado na view
-        contoViewController.conto = contos[indexPath.section]
+        let contoViewController = ContoViewController()
+        contoViewController.conto = contos[indexPath.item]
         navigationController?.show(contoViewController, sender: nil)
     }
     
@@ -122,48 +118,75 @@ class MyViewController : UIViewController, UICollectionViewDelegate, UICollectio
 class ContoViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     var conto: Conto?
     let collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: 1440, height: 900), collectionViewLayout: UICollectionViewFlowLayout())
-    
+    let arrastar = UIImageView(frame: CGRect(x: 1065, y: 306, width: 375, height: 288))
     
     override func loadView() {
         let view = UIView()
         view.frame.size = CGSize(width: 1440, height: 900)
         view.backgroundColor = .myWhite
+        
         // imagem de camera
         let camera = UIImageView(image: UIImage(named: "camera"))
         camera.frame = CGRect(x: 89, y: 57, width: 91, height: 91)
+        camera.layer.shadowColor = UIColor.black.cgColor
+        camera.layer.shadowOpacity = 0.4
+        camera.layer.shadowOffset = CGSize(width: 0.0, height: 4.0)
+        camera.layer.shadowRadius = 6
+        
         // botao voltar para a colecao
         let voltar = UIButton()
         voltar.frame = CGRect(x: 1183, y: 761, width: 164, height: 51)
         voltar.setBackgroundImage(UIImage(named: "voltar"), for: .normal)
         voltar.addTarget(nil, action: #selector(ContoViewController.voltarButton), for: .touchUpInside)
+        
         // titulo
-        let titulo = UILabel()
-        //titulo.frame = CGRect(x: 175, y: 80, width: 339, height: 50)
+        let titulo = UITextView()
         titulo.textColor = .myWhite
-        titulo.layer.masksToBounds = true
+        titulo.layer.masksToBounds = false
         titulo.layer.cornerRadius = 25
         titulo.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMaxXMaxYCorner]
-        titulo.backgroundColor = .myBlue
-        titulo.font = UIFont(name: "LuckiestGuy-Regular", size: 30)
+        titulo.backgroundColor = #colorLiteral(red: 0.1935816407, green: 0.1936210096, blue: 0.1935765147, alpha: 1)  //mudar depois para myBlack
+        titulo.font = UIFont(name: "LuckiestGuy-Regular", size: 28)
         titulo.textAlignment = .center
         titulo.text = conto?.titulo
         titulo.sizeToFit()
         titulo.frame = CGRect(x: 175, y: 80, width: titulo.frame.size.width+40, height: 50)
+        titulo.isEditable = false
+        titulo.textContainerInset = UIEdgeInsets(top: 14, left: 0, bottom: 0, right: 0)
+        titulo.layer.shadowColor = UIColor.black.cgColor
+        titulo.layer.shadowOpacity = 0.4
+        titulo.layer.shadowOffset = CGSize(width: 0.0, height: 4.0)
+        titulo.layer.shadowRadius = 6
+        
         // collectionView
         collectionView.register(ContoEspecificoCollectionViewCell.self, forCellWithReuseIdentifier: "Cell")
         if let layout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             layout.scrollDirection = .horizontal
         }
-        collectionView.backgroundColor = .myBlack
+        collectionView.backgroundColor = .myBlue
         collectionView.delegate = self
         collectionView.dataSource = self
+
+        arrastar.image = UIImage(named: "arraste")
         
         view.addSubview(collectionView)
-        view.addSubview(titulo)
         view.addSubview(camera)
+        view.addSubview(titulo)
         view.addSubview(voltar)
+        view.addSubview(arrastar)
         
         self.view = view
+    }
+    
+    override func viewDidLoad() {
+        let seconds = 5.0
+        DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
+            UIView.animate(withDuration: 1, animations: {
+                self.arrastar.alpha = 0
+            }) { _ in
+                self.arrastar.isHidden = true
+            }
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -178,6 +201,9 @@ class ContoViewController: UIViewController, UICollectionViewDelegate, UICollect
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as? ContoEspecificoCollectionViewCell
         cell?.backgroundView = UIImageView(image: conto?.fotos[indexPath.item])
         cell?.descricao.text = conto?.legendas[indexPath.item]
+        cell?.descricao.sizeToFit()
+        cell?.descricao.frame = CGRect(x: 0, y: 750, width: 930, height: (cell?.descricao.frame.size.height)!)
+        
         return cell!
     }
     
@@ -286,12 +312,12 @@ class TelaInicialViewController: UIViewController {
     }
     
     @IBAction func comecarButton() {
-        navigationController?.show(myViewController, sender: nil)
+        navigationController?.show(MyViewController(), sender: nil)
     }
 }
 
-let myViewController = MyViewController()
-let contoViewController = ContoViewController()
+//let myViewController = MyViewController()
+//let contoViewController = ContoViewController()
 let telaInicialViewController = TelaInicialViewController()
 
 //contoViewController.modalPresentationStyle = .fullScreen
